@@ -1,24 +1,31 @@
 <%= form_with model: @flight, method: :get do |form| %>
-<%= form.label :departure_airport_id, "Departure airport:" %>
+<%= form.label :departure_airport_id %>
 <%= form.collection_select :departure_airport_id, Airport.order(:code), :id, :code %>
 
-<%= form.label :arrival_airport_id, "Arrival airport:" %>
+<%= form.label :arrival_airport_id %>
 <%= form.collection_select :arrival_airport_id, Airport.order(:code), :id, :code %>
 
-<%= form.label :start_datetime, "Date:" %>
+<%= form.label :date %>
 <%= form.select :date, @available_dates %>
+
+<%= form.label :number_of_passengers, "Passengers" %>
+<%= form.select :number_of_passengers, 1..10 %>
 
 <%= form.submit "Search flight!" %>
 <% end %>
 
 <hr>
 
-<%= form_with do |form| %>
-    <% @flights.each do |flight| %>
-        <p>Departure: <%= flight.departure_airport.code %></p>
-        <p>Arrival: <%= flight.arrival_airport.code %></p>
-        <p>Date: <%= flight.date %></p>
-        <p>Time: <%= flight.time.strftime("%H:%I") %></p>
-        <%= form.radio_button :flight_id, flight.id %>
+<% if @flights %>
+    <%= form_with url: new_booking_url, method: :get do |form| %>
+        <% @flights.each do |flight| %>
+            <p>Departure: <%= flight.departure_airport.code %></p>
+            <p>Arrival: <%= flight.arrival_airport.code %></p>
+            <p>Date: <%= flight.date %></p>
+            <p>Time: <%= flight.time.strftime("%H:%I") %></p>
+            <%= form.radio_button :flight_id, flight.id, required: true %>
+        <% end %>
+        <%= form.hidden_field :number_of_passengers, value: @number_of_passengers %>
+        <%= form.submit "Book flight!" %>
     <% end %>
 <% end %>
