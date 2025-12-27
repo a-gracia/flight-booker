@@ -6,11 +6,19 @@
 <%= form.collection_select :arrival_airport_id, Airport.order(:code), :id, :code %>
 
 <%= form.label :start_datetime, "Date:" %>
-<%= form.collection_select :start_datetime,
-        Flight.order(:start_datetime),
-        :start_datetime,
-        :flight_date_formatted %>
+<%= form.select :date, @available_dates %>
 
 <%= form.submit "Search flight!" %>
+<% end %>
 
+<hr>
+
+<%= form_with do |form| %>
+    <% @flights.each do |flight| %>
+        <p>Departure: <%= flight.departure_airport.code %></p>
+        <p>Arrival: <%= flight.arrival_airport.code %></p>
+        <p>Date: <%= flight.date %></p>
+        <p>Time: <%= flight.time.strftime("%H:%I") %></p>
+        <%= form.radio_button :flight_id, flight.id %>
+    <% end %>
 <% end %>
