@@ -1,0 +1,16 @@
+<%= form_with model: @flight, method: :get do |form| %>
+<%= form.label :departure_airport_id, "Departure airport:" %>
+<%= form.collection_select :departure_airport_id, Airport.order(:code), :id, :code %>
+
+<%= form.label :arrival_airport_id, "Arrival airport:" %>
+<%= form.collection_select :arrival_airport_id, Airport.order(:code), :id, :code %>
+
+<%= form.label :start_datetime, "Date:" %>
+<%= form.collection_select :start_datetime,
+        Flight.order(:start_datetime),
+        :start_datetime,
+        :flight_date_formatted %>
+
+<%= form.submit "Search flight!" %>
+
+<% end %>
