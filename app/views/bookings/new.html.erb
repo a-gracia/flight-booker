@@ -1,1 +1,24 @@
-hola
+<h1>Booking</h1>
+<h2>Flight Details</h2>
+<p>Date: <%= @flight.date %></p>
+<p>Time: <%= @flight.time.strftime("%H:%M") %></p>
+<p>Departure airport: <%= @flight.departure_airport.code %></p>
+<p>Arrival airport: <%= @flight.arrival_airport.code %></p>
+
+
+<h2>Passengers details</h2>
+
+<%= form_with model: @dummy_flight, url: bookings_url  do |form| %>
+    <%= form.fields_for :passengers do |passenger_form| %>
+        <div>
+            <%= passenger_form.label :name %>
+            <%= passenger_form.text_field :name %>
+
+            <%= passenger_form.label :email %>
+            <%= passenger_form.email_field :email %>
+        </div>
+    <% end %>
+    <%= form.hidden_field :flight_id, value: @flight.id %>
+    <%= form.submit "Book flight" %>
+<% end %>
+

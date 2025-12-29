@@ -5,6 +5,8 @@ class Flight < ApplicationRecord
   has_many :bookings
   has_many :passengers, through: :bookings
 
+  accepts_nested_attributes_for :passengers
+
   def flight_date_formatted
     start_datetime.strftime("%Y-%m-%d")
   end
