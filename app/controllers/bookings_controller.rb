@@ -13,8 +13,8 @@ class BookingsController < ApplicationController
   def create
     @flight = Flight.find(params[:flight][:flight_id])
      if @flight.update(passenger_params)
-      flash[:success] = "You have successfully logged out."
-      redirect_to :show
+      flash[:success] = "You have successfully booked your tickets."
+      redirect_to :root
      else
       render :new, status: :unprocessable_entity
      end
