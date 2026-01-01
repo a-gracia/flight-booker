@@ -4,21 +4,28 @@
 <p>Time: <%= @flight.time.strftime("%H:%M") %></p>
 <p>Departure airport: <%= @flight.departure_airport.code %></p>
 <p>Arrival airport: <%= @flight.arrival_airport.code %></p>
-
-
 <h2>Passengers details</h2>
-
-<%= form_with model: @dummy_flight, url: bookings_url  do |form| %>
-    <%= form.fields_for :passengers do |passenger_form| %>
-        <div>
-            <%= passenger_form.label :name %>
-            <%= passenger_form.text_field :name %>
-
-            <%= passenger_form.label :email %>
-            <%= passenger_form.email_field :email %>
-        </div>
-    <% end %>
+<div data-controller="passenger" data-passenger-count-value="<%= @number_of_passengers %>">
+  <button data-action="passenger#addPassenger">Add passenger</button>
+  <%= form_with model: @dummy_flight, url: bookings_url  do |form| %>
+    <table id="passengertable">
+      <tbody data-passenger-target="tbody">
+      </tbody>
+    </table>
     <%= form.hidden_field :flight_id, value: @flight.id %>
     <%= form.submit "Book flight" %>
-<% end %>
-
+  <% end %>
+  <template data-passenger-target="passengerrow">
+    <tr passenger_id="INDEX">
+      <td>
+        <label for="flight_passengers_attributes_INDEX_name">Name</label>
+        <input type="text" name="flight[passengers_attributes][INDEX][name]" id="flight_passengers_attributes_INDEX_name">
+      </td>
+      <td>
+        <label for="flight_passengers_attributes_INDEX_email">Email</label>
+        <input type="email" name="flight[passengers_attributes][INDEX][email]" id="flight_passengers_attributes_INDEX_email">
+      </td>
+      <td><button data-action="passenger#removePassenger" passenger_id="INDEX">Remove passenger</button></td>
+    </tr>
+  </template>
+</div>
