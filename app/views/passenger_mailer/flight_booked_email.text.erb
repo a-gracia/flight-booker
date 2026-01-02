@@ -1,0 +1,7 @@
+Your flight has been booked!
+Hello <%= @passenger.name %>
+Your flight has been booked. Please check your flight details
+Date: <%= @flight.date %>
+Time: <%= @flight.time.strftime("%H:%M") %>
+Departure: <%= @flight.departure_airport.code %>
+Arrival: <%= @flight.arrival_airport.code %>

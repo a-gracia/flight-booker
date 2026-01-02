@@ -12,7 +12,15 @@ class BookingsController < ApplicationController
 
   def create
     @flight = Flight.find(params[:flight][:flight_id])
+
+    @flight.assign_attributes(passenger_params)
+    new_passengers = @flight.passengers.select(&:new_record?)
+
      if @flight.update(passenger_params)
+      new_passengers.each do |passenger|
+        PassengerMailer.with(passenger: passenger, flight: @flight).flight_booked_email.deliver_later
+      end
+
       flash[:success] = "You have successfully booked your tickets."
       redirect_to :root
      else
